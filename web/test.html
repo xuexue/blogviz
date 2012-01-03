@@ -12,17 +12,16 @@
     </div>
 
     <script type="text/javascript">
+      linechart("#test2", blogstats)
+        .width(900).height(300)
+        .labels(blogdates)
+        .padding(50)
+        .plot()
       linechart("#test", happiness)
         .width(900).height(300)
         .labels(dates)
         .padding(50)
         .stroke(2)
-        .plot()
-
-      linechart("#test", blogstats)
-        .width(900).height(300)
-        .labels(blogdates)
-        .padding(50)
         .plot()
     </script>
   </body>
