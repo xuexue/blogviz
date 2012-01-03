@@ -6,7 +6,6 @@ import tornado.ioloop
 import tornado.web
 from tornado.options import define, options
 
-import const
 import handlers
 
 
@@ -23,12 +22,8 @@ def get_app():
     'static_path':os.path.join(root_dir, 'static'),
     'cookie_secret':'1234567890',
     'ui_modules':[],
-    # My settings
-    'google_consumer_key':const.CLIENT_ID,
-    'google_consumer_secret':const.CLIENT_SECRET,
   }
   hdlrs = [
-    ('/login', handlers.GoogleHandler),
   ]
   return tornado.web.Application(hdlrs, **settings)
 
