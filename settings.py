@@ -36,6 +36,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'urls'
 
 INSTALLED_APPS = (
+    # First party apps.
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -43,8 +44,12 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'bviz',
+    # Third party apps
     'social_auth',
+    'south',
+
+    # Actual application.
+    'bviz',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

@@ -136,6 +136,7 @@ def get_credentials(user_social_auth):
   return credentials
 
 def main():
+  '''function for ad-hoc testing of functionality.'''
   user = User.objects.get(email='jeeyoungk@gmail.com')
   puller = DataPuller.from_user(user)
   puller.save_profiles()

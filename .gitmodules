@@ -1,3 +1,6 @@
 [submodule "thirdparty/django-social-auth"]
 	path = thirdparty/django-social-auth
 	url = https://github.com/omab/django-social-auth.git
+[submodule "thirdparty/d3"]
+	path = thirdparty/d3
+	url = https://github.com/mbostock/d3.git

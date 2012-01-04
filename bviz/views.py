@@ -12,3 +12,6 @@ def logged_in(request):
 def login_error(request):
   ctx = {}
   return render(request, 'logged_in.html', ctx)
+
+def all_profiles(request):
+  return render(request, '', ctx)
