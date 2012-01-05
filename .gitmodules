@@ -4,3 +4,6 @@
 [submodule "thirdparty/d3"]
 	path = thirdparty/d3
 	url = https://github.com/mbostock/d3.git
+[submodule "thirdparty/underscore"]
+	path = thirdparty/underscore
+	url = https://github.com/documentcloud/underscore.git
