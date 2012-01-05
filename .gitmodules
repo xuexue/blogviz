@@ -7,3 +7,9 @@
 [submodule "thirdparty/underscore"]
 	path = thirdparty/underscore
 	url = https://github.com/documentcloud/underscore.git
+[submodule "thirdparty/backbone"]
+	path = thirdparty/backbone
+	url = https://github.com/documentcloud/backbone.git
+[submodule "thirdparty/qunit"]
+	path = thirdparty/qunit
+	url = https://github.com/jquery/qunit.git

@@ -1,8 +1,8 @@
 function linechart(div, data) {
-  chart = {}
+  chart = {};
   if (!div || !data) {
     // throw some error
-    return
+    return;
   }
 
   chart.div = div
