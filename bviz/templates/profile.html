@@ -3,27 +3,39 @@
 <script>
   $(function(){
     var template = $('#profile_tmpl').compile();
-    $.get('/ajax/profile', function(data){
-      var ctx = {
-        items: data.items
+
+    var render_data = function(data){
+      $('#plot').empty();
+      linechart("#plot", data.stats)
+        .width(900).height(300)
+        .labels(data.dates)
+        .padding(50)
+        .plot();
       };
-      var menu = $('#menu');
-      var render_data = function(data){
-        $('#plot').empty();
-        linechart("#plot", data.stats)
-          .width(900).height(300)
-          .labels(data.dates)
-          .padding(50)
-          .plot();
-      };
-      menu.html(template(ctx));
-      $('.ga-profile', menu).click(function(event){
-        var account_id=$(event.currentTarget).attr('data-id');
-        var qry = {account_id:account_id};
-        $.get('/ajax/query', qry, render_data, 'json');
-        return false;
-      });
-    }, 'json');
+    var render_screen = function(){
+
+      $.get('/ajax/profile', function(data){
+        var ctx = {
+          items: data.items
+        };
+        var menu = $('#menu');
+        menu.html(template(ctx));
+        $('.ga-profile', menu).click(function(event){
+          var account_id=$(event.currentTarget).attr('data-id');
+          var qry = {account_id:account_id};
+          $.get('/ajax/query', qry, render_data, 'json');
+          return false;
+        });
+        $('.refresh_profile', menu).click(function(event){
+          $.post('/ajax/refresh_profile', {}, function(){
+            // re-render this entire thing.
+            render_screen();
+          }, 'json');
+        });
+      }, 'json');
+    };
+
+    render_screen();
   });
 </script>
 {% endblock %}
@@ -32,6 +44,7 @@
 <div id='plot'></div>
 <script type="text/x-template" id="profile_tmpl">
   <div>Profile</div>
+  <button class="refresh_profile">Refresh Profile</button>
   <% _.each(items, function(item){ %>
     <div>
       <a class="ga-profile" href="#" data-id="<%= item.id %>">

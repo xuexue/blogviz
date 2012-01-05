@@ -6,7 +6,7 @@ import bviz.ajax as ajax
 def get_ajax_patterns():
   result = []
   function_names = [
-    'profile', 'query',
+    'profile', 'query','refresh_profile',
   ]
   for name in function_names:
     func = getattr(ajax, name)

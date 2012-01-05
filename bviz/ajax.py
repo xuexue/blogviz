@@ -1,13 +1,17 @@
 # Author : Jeeyoung Kim
 # Ajax-endpoints.
 import json
-
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-from bviz.data_import import DataPuller
+import logging
 from itertools import imap
 
+from django.contrib.auth.decorators import login_required
+from django.core.cache import cache
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+
 from bviz import models as m
+from bviz.data_import import DataPuller
+
 
 def render_as_json(request, dictionary):
   # TODO - add flags.
@@ -29,16 +33,36 @@ def profile(request):
   return render_as_json(request, d)
 
 @login_required
+@csrf_exempt
+def refresh_profile(request):
+  if request.method != 'POST':
+    # TODO - figure out the right type of exception to throw in this situation.
+    raise Exception, 'POST only.'
+  puller = DataPuller.from_user(request.user)
+  puller.save_profiles()
+  d = {}
+  return render_as_json(request, d)
+
+@login_required
 def query(request):
   '''Perform a query against Google Analytics server.'''
   user = request.user
   first = lambda x : x[0]
   second = lambda x: x[1]
-  puller = DataPuller.from_user(user)
   account_id = request.REQUEST.get('account_id')
-  result = puller.query(
-      account_id, metrics='visits',
-      dimensions=['date'])
+  # retrieving result from google API is pretty slow.
+  # so, we're using caching.
+  cache_key = '%s:%s:%s' % ('query',user.pk,account_id)
+  result = cache.get(cache_key)
+  if result is None:
+    logging.debug('cache miss')
+    puller = DataPuller.from_user(user)
+    result = puller.query(
+        account_id, metrics='visits',
+        dimensions=['date'])
+    cache.set(cache_key, result, 3600)
+  else:
+    logging.debug('cache hit')
   rows = result['rows']
   dates = imap(first, rows)
   stats = map(int, imap(second, rows))
