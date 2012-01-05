@@ -1,24 +1,55 @@
-# Django settings for bviz project.
-from settings_etc import *;
+# Author: Jeeyoung Kim
+# Bunch of somewhat obscure django settings.
+TIME_ZONE = 'America/Chicago'
+LANGUAGE_CODE = 'en-us'
+SITE_ID = 1
+USE_I18N = True
+USE_L10N = True
 
-DEBUG = True
+MEDIA_ROOT = ''
+MEDIA_URL = ''
+STATIC_ROOT = ''
+STATIC_URL = '/static/'
+ADMIN_MEDIA_PREFIX = '/static/admin/'
+
+STATICFILES_DIRS = ()
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+TEMPLATE_DIRS = ()
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
+}
+
+# Debug toolbar related settings.
+INTERNAL_IPS = ('127.0.0.1',)
+
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS':False,
+}
+
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = ()
 
 MANAGERS = ADMINS
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'blogviz',                      
-        'USER': 'liblist',                      
-        'PASSWORD': 'liblist',                  
-        'HOST': '',                      
-        'PORT': '',                      
-    }
-}
-MONGODB_NAME = 'blogviz'
 
 SECRET_KEY = '^=c@y)-rkxi#+_3k!9&c6@x)t%h=)3u#!e+byewim)&3r^1ynr'
 TEMPLATE_LOADERS = (
