@@ -1,16 +1,32 @@
 This is a better front end to google analytics, tailored to blogs.
 
 Instruction to run.
-1. create database in mysql
+1. create database in mysql.
 
 CREATE DATABASE blogviz CHARACTER SET UTF8;
 
-2. copy settings_template.py into settings.py, modify the database credentials in settings.py accordingly.
+2. copy settings_template.py into settings.py,
+modify the database credentials in settings.py accordingly -
+namely, USER and PASSWORD fields.
 
-3. install pip-requirements
+3. install -r pip-requirements
 
 4. source env.sh (you can choose to do this in your .bashrc)
 
 5. ./manage.py syncdb
 
-6. ./manage.py runserver
+6. git submodule init && git submodule update
+
+(optional) 1. set up caching
+  a ./manage.py createcachetable cache
+  b paste the following in your settings.py
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'cach3',
+    }
+}
+
+To Run
+./manage.py runserver 

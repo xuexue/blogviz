@@ -2,7 +2,7 @@ function linechart(div, data) {
   chart = {};
   if (!div || !data) {
     // throw some error
-    return;
+    return
   }
 
   chart.div = div
