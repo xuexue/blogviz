@@ -44,7 +44,7 @@ def query(request):
   stats = map(int, imap(second, rows))
   dates = ['%s/%s/%s' % (x[4:6],x[6:8],x[0:4]) for x in dates]
   d = {
-      'stats':stats,
-      'dates':dates,
+    'stats':stats,
+    'dates':dates,
   }
   return render_as_json(request, d)
