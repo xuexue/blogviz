@@ -8,6 +8,7 @@ function linechart(div, data) {
   chart.div = div
   chart.data = data
 
+  // things that can be changed
   chart._width = 500 
   chart._height = 400
   chart._padding = 10
@@ -33,8 +34,7 @@ function linechart(div, data) {
   chart.labelfont = function(labelfont) { chart._labelfont = labelfont; return chart; }
   chart.gridcolour = function(gridcolour) { chart._gridcolour = gridcolour; return chart; }
   chart.gridwidth = function(gridwidth) { chart._gridwidth = gridwidth; return chart; }
-  // this is the only tricky one
-  chart.labels = function(labels) {
+  chart.labels = function(labels) { // this is the only tricky one
     chart._labels = function(i) { return labels[i] };
     return chart;
   }
@@ -56,10 +56,10 @@ function linechart(div, data) {
       .append("svg:svg")
       .attr("width", this._width+ 2*this._padding)
       .attr("height", this._height + 2*this._padding)
-    this.g = vis.append("svg:g")
+    var g = vis.append("svg:g")
       .attr("transform", "translate("+this._padding+","+this._padding+")")
     // draw the x-labels at the bottom
-    this.g.selectAll(".xLabel")
+    g.selectAll(".xLabel")
         .data(x.ticks(5))
         .enter().append("svg:text")
         .attr("class", "xLabel")
@@ -70,7 +70,7 @@ function linechart(div, data) {
         .attr("font", this._labelfont)
         .attr("font-size", this._labelsize)
     // draw the y-labels and lines
-    this.g.selectAll(".yLines")
+    g.selectAll(".yLines")
         .data(y.ticks(3))
         .enter().append("svg:line")
         .attr("x1", x(0))
@@ -79,7 +79,7 @@ function linechart(div, data) {
         .attr("y2", y)
         .style("stroke", this._gridcolour)
         .style("stroke-width", this._gridwidth)
-    this.g.selectAll(".yLabel")
+    g.selectAll(".yLabel")
         .data(y.ticks(3))
         .enter().append("svg:text")
         .attr("class", "yLabel")
@@ -90,12 +90,12 @@ function linechart(div, data) {
         .attr("font", this._labelfont)
         .attr("font-size", this._labelsize)
     // draw the actual lines
-    this.g.append("svg:path").attr("d", line(data))
+    g.append("svg:path").attr("d", line(data))
       .style("fill", "none")
       .style("stroke", this._colour)
       .style("stroke-width", this._stroke)
     // draw the circles and attach mouseover event handlers
-    this.g.selectAll(".points")
+    g.selectAll(".points")
       .data(data)
       .enter().append("svg:circle")
       .attr("cx", function(d, i) { return x(i) })
@@ -103,17 +103,33 @@ function linechart(div, data) {
       .attr("r", this._stroke)
       .style("fill", this._colour)
       .on("mouseover", function(d, i) {
-        d3.select(div).select('g') //chart.g doesn't work for multiple charts
-         .append("svg:text")
+        var g = d3.select(div).select('g') //chart.g doesn't work for multiple charts
+        var width = 100, height = 20
+        g.append("svg:rect")
+         .attr("class", "mouseoverBox")
+         .attr("x", x(i) -width/2)
+         .attr("y", y(d)-5 -height)
+         .attr("width", width)
+         .attr("height", height)
+         .attr("rx", 5)
+         .attr("ry", 5)
+         .style("fill", "white")
+         .style("stroke", "black")
+        g.append("svg:text")
          .attr("class", "mouseoverText")
          .attr("x", x(i))
          .attr("y", y(d)-10)
+         .attr("width", width)
          .attr("text-anchor", "middle")
          .text(String(d))
+
+
+
        })
       .on("mouseout", function(d) {
-        d3.select(div).select('g')
-          .selectAll(div + " .mouseoverText").remove()
+        var g = d3.select(div).select('g')
+        g.selectAll(div + " .mouseoverText").remove()
+        g.selectAll(div + " .mouseoverBox").remove()
       })
 
     return chart
