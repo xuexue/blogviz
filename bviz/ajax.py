@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from bviz import models as m
 from bviz.data_import import DataPuller
-
+from bviz.decorators import post_only
 
 def render_as_json(request, dictionary):
   # TODO - add flags.
@@ -34,10 +34,8 @@ def profile(request):
 
 @login_required
 @csrf_exempt
+@post_only
 def refresh_profile(request):
-  if request.method != 'POST':
-    # TODO - figure out the right type of exception to throw in this situation.
-    raise Exception, 'POST only.'
   puller = DataPuller.from_user(request.user)
   puller.save_profiles()
   d = {}

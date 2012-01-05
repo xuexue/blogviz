@@ -15,9 +15,10 @@ def get_ajax_patterns():
 
 ajax_patterns = get_ajax_patterns()
 urlpatterns = patterns('',
-    (r'index/', v.index),
-    (r'logged-in/', v.logged_in),
-    (r'login-error/', v.login_error),
-    (r'profile/', v.all_profiles),
+    (r'^login-form/', v.login_page),
+    (r'^index/', v.index),
+    (r'^logged-in/', v.logged_in),
+    (r'^login-error/', v.login_error),
+    (r'^profile/', v.all_profiles),
     *ajax_patterns
 )

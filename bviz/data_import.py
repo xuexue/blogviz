@@ -50,15 +50,19 @@ class DataPuller(object):
     return profile_list['items']
 
   def query(self, account_id, metrics, dimensions,
+    sort,
     **kwargs):
     '''
     Refer to 
-    http://code.google.com/apis/analytics/docs/gdata/dimsmets/dimsmets.html
-    for all the possible combinations of metrics and dimensions
+      http://code.google.com/apis/analytics/docs/gdata/dimsmets/dimsmets.html
+    for all the possible combinations of metrics and dimensions.
+      http://code.google.com/apis/analytics/docs/gdata/v3/reference.html#q_summary
+    for all the possible parameters.
 
     ga: prefix is automatically attached.
     '''
     prefix = lambda x : 'ga:%s' % x
+    sort_prefix = lambda x : '-ga:%s' % x[1:] if x.startswith('-') else prefix(x)
 
     # convert the data accordingly.
     if not isinstance(metrics, basestring):
@@ -69,6 +73,10 @@ class DataPuller(object):
       dimensions_query = ','.join(map(prefix, dimensions))
     else:
       dimensions_query = prefix(dimensions)
+    if not isinstance(sort, basestring):
+      sort_query = ','.join(map(sort_prefix, sort))
+    else:
+      sort_query = sort_prefix(sort)
     ids = prefix(account_id)
     
     # actual call.
@@ -78,6 +86,7 @@ class DataPuller(object):
         end_date=self.end_date.strftime(FMT),
         metrics=metrics_query,
         dimensions=dimensions_query,
+        sort=sort_query,
         **kwargs
     ).execute()
     return results
@@ -136,19 +145,18 @@ def get_credentials(user_social_auth):
   )
   return credentials
 
+class RedditAnalytics(object):
+  def __init__(self, domain):
+    self.domain = domain
+
 def main():
   '''function for ad-hoc testing of functionality.'''
   user = User.objects.get(email='jeeyoungk@gmail.com')
   puller = DataPuller.from_user(user)
-  puller.save_profiles()
-  return
-  # puller = DataPuller(cred)
-  # all_profiles = puller.all_profiles()
-  # ids = [x['id'] for x in all_profiles['items']]
-  # for key in ids:
+  # puller.save_profiles()
   for key in ['34969445']:
     result = puller.query_all(key,
-        metrics=['visits'],
+        # metrics=['visits'],
         # dimensions=['pagePath','date','month','hour'],
         dimensions=['pagePath'],
         filter='',

@@ -123,3 +123,5 @@ LOGIN_ERROR_URL    = '/login-error/'
 # pymongo related settings.
 # import mongoengine
 # mongoengine.connect(MONGODB_NAME)
+
+TEST_CHARSET = 'utf8'

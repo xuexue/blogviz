@@ -6,6 +6,10 @@ def index(request):
   ctx = {}
   return render(request, 'index.html', ctx)
 
+def login_page(request):
+  ctx = {}
+  return render(request, 'login.html', ctx)
+
 def logged_in(request):
   ctx = {}
   return render(request, 'logged_in.html', ctx)
