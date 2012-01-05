@@ -1,1 +1,16 @@
 This is a better front end to google analytics, tailored to blogs.
+
+Instruction to run.
+1. create database in mysql
+
+CREATE DATABASE blogviz CHARACTER SET UTF8;
+
+2. copy settings_template.py into settings.py, modify the database credentials in settings.py accordingly.
+
+3. install pip-requirements
+
+4. source env.sh (you can choose to do this in your .bashrc)
+
+5. ./manage.py syncdb
+
+6. ./manage.py runserver
