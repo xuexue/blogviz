@@ -1,0 +1,44 @@
+{% extends "abstract.html" %}
+{% block head %}
+<script>
+  $(function(){
+    var template = $('#profile_tmpl').compile();
+    $.get('/ajax/profile', function(data){
+      var ctx = {
+        items: data.items
+      };
+      var menu = $('#menu');
+      menu.html(template(ctx));
+      $('.ga-profile', menu).click(function(event){
+        var account_id=jQuery(event.currentTarget).attr('data-id');
+        var qry = {account_id:account_id};
+        $.get('/ajax/query', qry, function(data){
+          var data_dates = data.dates;
+          var data_stats = data.stats;
+          $('#plot').empty();
+          linechart("#plot", data_stats)
+            .width(900).height(300)
+            .labels(data_dates)
+            .padding(50)
+            .plot();
+          }, 'json');
+        return false;
+      });
+    }, 'json');
+  });
+</script>
+{% endblock %}
+{% block body %}
+<div id='menu'></div>
+<div id='plot'></div>
+<script type="text/x-template" id="profile_tmpl">
+  <div>Profile</div>
+  <% _.each(items, function(item){ %>
+    <div>
+      <a class="ga-profile" href="#" data-id="<%= item.id %>">
+        <div><b>Name:</b> <%- item.name %></div>
+      </a>
+    </div>
+  <% }); %>
+</script>
+{% endblock %}

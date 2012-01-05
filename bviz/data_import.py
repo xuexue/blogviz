@@ -27,7 +27,7 @@ class DataPuller(object):
     http = credentials.authorize(http)
 
     self.service = build('analytics', 'v3', http=http)
-    self.start_date = strptime('2011-01-01', FMT)
+    self.start_date = strptime('2011-09-01', FMT)
     self.end_date = strptime('2011-12-31', FMT)
     self.user = user
 

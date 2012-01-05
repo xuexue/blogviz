@@ -1,5 +1,6 @@
 # Create your views here.
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 def index(request):
   ctx = {}
@@ -11,7 +12,9 @@ def logged_in(request):
 
 def login_error(request):
   ctx = {}
-  return render(request, 'logged_in.html', ctx)
+  return render(request, 'login_error.html', ctx)
 
+@login_required
 def all_profiles(request):
-  return render(request, '', ctx)
+  ctx = {}
+  return render(request, 'profile.html', ctx)
