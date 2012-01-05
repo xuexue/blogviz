@@ -1,4 +1,6 @@
 *.pyc
+*.swp
+*.ai
 .ropeproject
 analytics.dat
 settings.py
