@@ -8,7 +8,6 @@ from tornado.options import define, options
 
 import handlers
 
-
 def _define():
   define('port', 8080, int)
   define('debug', True, bool)

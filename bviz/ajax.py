@@ -51,14 +51,14 @@ def query(request):
   # retrieving result from google API is pretty slow.
   # so, we're using caching.
   cache_key = '%s:%s:%s' % ('query',user.pk,account_id)
-  result = cache.get(cache_key)
+  # result = cache.get(cache_key)
+  result = None # disable caching for now.
   if result is None:
     logging.debug('cache miss')
     puller = DataPuller.from_user(user)
-    result = puller.query(
-        account_id, metrics='visits',
-        dimensions=['date'])
-    cache.set(cache_key, result, 3600)
+    result = puller.query(account_id, metrics='visits',
+        dimensions=['date'],sort=None)
+    # cache.set(cache_key, result, 3600)
   else:
     logging.debug('cache hit')
   rows = result['rows']

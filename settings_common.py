@@ -62,7 +62,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'urls'
@@ -79,7 +79,7 @@ INSTALLED_APPS = (
     # Third party apps
     'social_auth',
     'south',
-    'debug_toolbar',
+    # 'debug_toolbar',
     # Actual application.
     'bviz',
 )
@@ -125,3 +125,8 @@ LOGIN_ERROR_URL    = '/login-error/'
 # mongoengine.connect(MONGODB_NAME)
 
 TEST_CHARSET = 'utf8'
+
+BITLY_KEYS = {
+  'USERNAME':'o_2k98a3nefj',
+  'API_KEY':'R_27f6967cf49745a2de02690063abb239'
+}
